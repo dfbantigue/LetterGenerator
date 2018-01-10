@@ -30,7 +30,9 @@ public class VerticalLetterGenerator {
 
 	}
 
-	private static void printMe(Letter letter, int i, int scale, int j,StringBuffer strText) {
-		letter.printMe(i, scale, j,strText);
+	private void printMe(Letter letter, int i, int scale, int j,StringBuffer strText) {
+		for (int k = 0; k < scale; k++) {
+			letter.printMe(i, scale, j,k,strText);
+		}
 	}
 }
