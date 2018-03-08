@@ -1,4 +1,6 @@
-package oops;
+package oop;
+
+import common.Constant;
 
 public class HorizontalLetterGenerator {
 
@@ -6,33 +8,32 @@ public class HorizontalLetterGenerator {
 
 		StringBuffer strText = new StringBuffer();
 
-		if (scale < 3 || scale % 2 == 0)
-			throw new Exception("Input Value must be greater than or equal to 3, and must be odd numbers");
+		if (scale < Constant.MININUM_ALLOWED_VALUES || scale % Constant.MOD == 0)
+			throw new Exception(Constant.ALLOWED_VALUES_ERR_MSG);
 
-		for (int i = 0, j = scale - 1; i < scale; i++, j--) {
-			for (int k = 0; k < arr.length; k++) {
-				try {
-					printMe((Letter) Class.forName("oops." + arr[k]).newInstance(), i, scale, j,strText);
-					strText.append("  ");
-				} catch (InstantiationException e) {
-
-				} catch (IllegalAccessException e) {
-
-				} catch (ClassNotFoundException e) {
-					throw new Exception("This Letter is not yet implemented");
-				}
-
+		for (int i = 0, j = scale - 1; i < scale * arr.length; i++) {
+			
+			if (i != 0 && i % arr.length == 0) {
+				strText.append(Constant.NEXTLINE);
+				j--;
 			}
-			strText.append("\n");
+			try {
+				/* Calling the appropriate class based on array of String value */
+				printIt((Letter) Class.forName("oop." + arr[i % arr.length].toUpperCase()).newInstance(),i / arr.length, scale, j, strText);
+				strText.append(Constant.BLANK);
+			} catch (ClassNotFoundException e) {
+				throw new Exception(Constant.NOT_IMPLEMENT_LETTER_ERR_MSG);
+			}
+
 		}
-		
+
 		System.out.println(strText.toString());
 
 	}
 
-	private void printMe(Letter letter, int i, int scale, int j, StringBuffer strText) {
+	private void printIt(Letter letter, int i, int scale, int j, StringBuffer strText) {
 		for (int k = 0; k < scale; k++) {
-			letter.printMe(i, scale, j, k, strText);
+			letter.printLetter(i, scale, j, k, strText);
 		}
 	}
 
